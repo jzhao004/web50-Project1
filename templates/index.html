@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %} Books {% endblock %}
+
+{% block heading %} Sign in to your account {% endblock %}
+
+{% block body %}
+
+<form action="{{ url_for('index') }}", method="post">
+
+  <div style="width: 50%;">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" id="username" name="username" required>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password" name="password" required>
+    </div>
+  </div>
+
+  <!-- Display error message if user authentication fail -->
+  <div>
+    {% if message %}
+    {{ message }} <br>
+    {% endif %}
+  </div>
+
+  <br>
+
+  <button type="submit" class="btn btn-primary">Sign In</button><br><br>
+
+  Don't have an account? <a href="{{ url_for('register') }}">Sign up here</a>
+</form>
+{% endblock %}

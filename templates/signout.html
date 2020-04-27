@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block title %} Sign Out {% endblock %}
+
+{% block heading %} {% endblock %}
+
+{% block body %}
+You have been signed out. <br><br>
+
+<a class="btn btn-primary" href="{{ url_for('index') }}" role="button">Sign in</a>
+{% endblock %}

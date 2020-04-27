@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block title %} {{ book.title }} {% endblock %}
+
+{% block heading %} {{ book.title }} {% endblock %}
+
+{% block body %}
+<ul>
+  <li>Author: {{ book.author }}</li>
+  <li>Year: {{ book.year }}</li>
+  <li>ISBN: {{ book.isbn }}</li>
+  <li>Average rating on goodreads.com: {{ average_rating }}</li>
+  <li>Number of ratings on goodreads.com: {{ ratings_count }}</li>
+</ul>
+
+<h5>Reviews</h5>
+
+<table class="table">
+  <tr>
+    <th>Username</th>
+    <th>Review</th>
+    <th>Rating</th>
+  </tr>
+
+  {% for review in reviews %}
+  <tr>
+    <td>{{ review.username }}</td>
+    <td>{{ review.review }}</td>
+    <td>{{ review.rating }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<br>
+
+<form action="{{ url_for('book', isbn=book.isbn) }}", method="post">
+  <div style="width: 50%;">
+    <div class="form-group">
+      <label for="review">Write a review</label>
+      <textarea class="form-control" id="review" name = "review" rows="3" required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="rating">Rating</label>
+      <select class="form-control" id="rating" name = "rating" placeholder="Rating">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Display error message if user has already submitted a review for the book -->
+  <div>
+    {% if message %}
+    {{ message }}
+    <br>
+    {% endif %}
+  </div>
+
+  <br>
+
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>
+
+<br>
+
+<div>
+  <a href="{{ url_for('signout') }}">Sign Out</a>
+</div>
+{% endblock %}
