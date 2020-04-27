@@ -20,7 +20,7 @@ This repository contains the following files:
 2. Rating data of individual books pulled from goodreads.com
 
 Before running Flask,
-set FLASK_APP=application.py
-set FLASK_DEBUG=1
-set DATABASE_URL = "Database URL"
-set Goodreads API key
+1. set FLASK_APP=application.py
+2. set FLASK_DEBUG=1
+3. set DATABASE_URL = "Database URL"
+4. set Goodreads API key
