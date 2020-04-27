@@ -2,7 +2,7 @@
 
 Web Programming with Python and JavaScript
 
-This project aims to build a book review website using FLASK.
+This project aims to build a book review website using Flask.
 
 #### Files
 This repository contains the following files:
@@ -19,7 +19,7 @@ This repository contains the following files:
 1. books.csv: Contains ISBN number, title, author, and publication year of 5000 books
 2. Rating data of individual books pulled from goodreads.com
 
-Before running Flask,
+#### Before running Flask
 1. set FLASK_APP=application.py
 2. set FLASK_DEBUG=1
 3. set DATABASE_URL = "Database URL"
