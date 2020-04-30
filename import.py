@@ -1,29 +1,34 @@
 import csv
 import os
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
+from flask import Flask, render_template, request
+from models import *
 
-# Set up database
-engine = create_engine(os.getenv("DATABASE_URL"))
-db = scoped_session(sessionmaker(bind=engine))
+app = Flask(__name__)
+
+# Configure session to use filesystem
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db.init_app(app)
 
 def main():
-    db.execute("DROP TABLE IF EXISTS users, authors, books, reviews")
-    db.execute("CREATE TABLE users(id SERIAL PRIMARY KEY, username VARCHAR NOT NULL, password VARCHAR NOT NULL)")
-    db.execute("CREATE TABLE authors(id SERIAL PRIMARY KEY, author VARCHAR NOT NULL UNIQUE)")
-    db.execute("CREATE TABLE books(id SERIAL PRIMARY KEY, isbn VARCHAR NOT NULL UNIQUE, title VARCHAR NOT NULL, authorid INT REFERENCES authors, year VARCHAR NOT NULL)")
-    db.execute("CREATE TABLE reviews(id SERIAL PRIMARY KEY, userid INT REFERENCES users, bookid INT REFERENCES books, review VARCHAR NOT NULL, rating INT NOT NULL)")
-
     with open('books.csv') as f:
         reader = csv.reader(f)
         next(reader)
 
         for isbn, title, author, year in reader:
-            db.execute("INSERT INTO authors (author) SELECT :author WHERE NOT EXISTS (SELECT author FROM authors WHERE author = :author)", {"author": author})
-            db.execute("INSERT INTO books (isbn, title, authorid, year) VALUES (:isbn, :title, (SELECT id FROM authors WHERE author = :author), :year)", {"isbn": isbn, "title": title, "author": author, "year": year})
+            if not Author.query.filter_by(author=author).first():
+                a = Author(author=author)
+                db.session.add(a)
 
-    db.commit()
+            authorid = Author.query.filter_by(author=author).one().id
+
+            b = Book(isbn=isbn, title=title, authorid=authorid, year=year)
+            db.session.add(b)
+
+            print(f"Added {title} by {author}")
+        db.session.commit()
 
 if __name__ == "__main__":
-    main()
+    with app.app_context():
+        main()
