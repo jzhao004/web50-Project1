@@ -65,7 +65,7 @@
     <td>
       <a href="{{ url_for('book', isbn=book.isbn) }}">{{ book.title }}</a>
     </td>
-    <td>{{ book.author }}</td>
+    <td>{{ book.author.author }}</td>
     <td>{{ book.year }}</td>
   </tr>
   {% endfor %}

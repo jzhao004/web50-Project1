@@ -6,7 +6,7 @@
 
 {% block body %}
 <ul>
-  <li>Author: {{ book.author }}</li>
+  <li>Author: {{ book.author.author }}</li>
   <li>Year: {{ book.year }}</li>
   <li>ISBN: {{ book.isbn }}</li>
   <li>Average rating on goodreads.com: {{ average_rating }}</li>
@@ -24,7 +24,7 @@
 
   {% for review in reviews %}
   <tr>
-    <td>{{ review.username }}</td>
+    <td>{{ review.user.username }}</td>
     <td>{{ review.review }}</td>
     <td>{{ review.rating }}</td>
   </tr>
